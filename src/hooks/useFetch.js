@@ -3,6 +3,7 @@ import { useEffect, useReducer } from "react";
 const cache = {};
 
 const useFetch = (url) => {
+  // const ref = useRef({})
   const initialState = {
     status: "idle",
     data: null,
@@ -25,14 +26,17 @@ const useFetch = (url) => {
 
     const fetchData = async () => {
       dispatch({ type: "FETCHING" });
+      // ref.current[url]
       if (cache[url]) {
         const cacheData = cache[url];
+        // const cacheData = ref.current[url];
         if (cancelRequest) return;
         dispatch({ type: "FETCHED", payload: cacheData });
       } else {
         const response = await fetch(url);
         const res = await response.json();
         cache[url] = res;
+        // ref.current[url] = res;
         if (cancelRequest) return;
         dispatch({ type: "FETCHED", payload: res });
       }
